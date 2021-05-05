@@ -1,0 +1,12 @@
+Started sim OpenDominion\Sim\Firewalker\AlchsSpecs\Sim at 2021-02-27 08:23:35
+Tick 0 (day 4 hr 0): 800
+Tick 12 (day 4 hr 12): 800
+Tick 24 (day 5 hr 0): 834
+Tick 36 (day 5 hr 12): 990
+Tick 48 (day 6 hr 0): 1115
+Tick 60 (day 6 hr 12): 1236
+Tick 72 (day 7 hr 0): 1308
+Tick 84 (day 7 hr 12): 1411
+Tick 96 (day 8 hr 0): 1479
+Tick 108 (day 8 hr 12): 1573
+Tick 120 (day 9 hr 0): 1650
