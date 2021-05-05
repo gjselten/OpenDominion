@@ -91,6 +91,9 @@ $router->group(['middleware' => 'auth'], static function (Router $router) {
             // Status
             $router->get('status')->uses('Dominion\StatusController@getStatus')->name('status');
 
+            // Sim
+            $router->get('sim')->uses('Dominion\SimController@getSim')->name('sim');
+
             // Advisors
             $router->get('advisors')->uses('Dominion\AdvisorsController@getAdvisors')->name('advisors');
             $router->get('advisors/op-center')->uses('Dominion\AdvisorsController@getAdvisorsOpCenter')->name('advisors.op-center');

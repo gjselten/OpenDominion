@@ -17,6 +17,7 @@
             @if (isset($selectedDominion))
 
                 <li class="header">GENERAL</li>
+                <li><a href="{{ route('dominion.sim') }}"><i class="fa fa-bar-chart fa-fw"></i> <span>Sim</span></a></li>
                 <li class="{{ Route::is('dominion.status') ? 'active' : null }}"><a href="{{ route('dominion.status') }}"><i class="fa fa-bar-chart fa-fw"></i> <span>Status</span></a></li>
                 <li class="{{ Route::is('dominion.advisors.*') ? 'active' : null }}"><a href="{{ route('dominion.advisors') }}"><i class="fa fa-question-circle fa-fw"></i> <span>Advisors</span></a></li>
                 <li class="{{ Route::is('dominion.bonuses') ? 'active' : null }}">
