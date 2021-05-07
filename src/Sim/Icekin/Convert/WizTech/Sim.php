@@ -14,7 +14,7 @@ use OpenDominion\Sim\Icekin\Convert\WizTech\TechStrategy;
 class Sim extends Base
 {
   function ticks_to_run() {
-    return 24 * 25;
+    return 24 * 30;
   }
 
   function setup($tick) {
@@ -137,7 +137,7 @@ class Sim extends Base
       'name' => 'domname'  . rand(0,999999999),
       'prestige' => 250,
 
-      'peasants' => 10016,
+      'peasants' => 10426,
       'peasants_last_hour' => 0,
 
       'draft_rate' => 90,
@@ -145,11 +145,11 @@ class Sim extends Base
       'spy_strength' => 100,
       'wizard_strength' => 100,
 
-      'resource_platinum' => 436459,
-      'resource_food' => 22788,
-      'resource_lumber' => 11389,
+      'resource_platinum' => 339011,
+      'resource_food' => 1168,
+      'resource_lumber' => 6049,
       'resource_mana' => 10000,
-      'resource_ore' => 88962,
+      'resource_ore' => 67986,
       'resource_gems' => 0,
       'resource_tech' => 0,
       'resource_boats' => 0,
@@ -161,39 +161,39 @@ class Sim extends Base
       'improvement_walls' => 0,
       'improvement_harbor' => 0,
 
-      'military_draftees' => 957,
+      'military_draftees' => 554,
       'military_unit1' => 0,
-      'military_unit2' => 977,
-      'military_unit3' => 565,
+      'military_unit2' => 876,
+      'military_unit3' => 675,
       'military_unit4' => 0,
       'military_spies' => 0,
       'military_wizards' => 0,
       'military_archmages' => 0,
 
-      'land_plain' => 373,
-      'land_mountain' => 189,
-      'land_swamp' => 43,
-      'land_cavern' => 30,
-      'land_forest' => 20,
-      'land_hill' => 129,
+      'land_plain' => 398,
+      'land_mountain' => 308,
+      'land_swamp' => 40,
+      'land_cavern' => 0,
+      'land_forest' => 33,
+      'land_hill' => 6,
       'land_water' => 0,
 
       'building_home' => 30,
-      'building_alchemy' => 207,
-      'building_farm' => 24,
+      'building_alchemy' => 236,
+      'building_farm' => 20,
       'building_smithy' => 142,
       'building_masonry' => 0,
-      'building_ore_mine' => 159,
+      'building_ore_mine' => 278,
       'building_gryphon_nest' => 0,
-      'building_tower' => 43,
+      'building_tower' => 40,
       'building_wizard_guild' => 0,
       'building_temple' => 0,
       'building_diamond_mine' => 0,
-      'building_school' => 30,
-      'building_lumberyard' => 20,
+      'building_school' => 0,
+      'building_lumberyard' => 33,
       'building_forest_haven' => 0,
-      'building_factory' => 109,
-      'building_guard_tower' => 20,
+      'building_factory' => 6,
+      'building_guard_tower' => 0,
       'building_shrine' => 0,
       'building_barracks' => 0,
       'building_dock' => 0,
