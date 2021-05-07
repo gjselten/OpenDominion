@@ -15,7 +15,7 @@ use OpenDominion\Sim\BaseTechStrategy;
 class Sim extends Base
 {
   function ticks_to_run() {
-    return 24 * 12;
+    return 24 * 20;
   }
 
   function setup($tick) {
@@ -104,9 +104,9 @@ class Sim extends Base
     //   }
     // }
 
-    if($tick == 440) {
-      $result = $this->destroyActionService->destroy($this->dominion, ['ore_mine' => 100]);
-    }
+    // if($tick == 440) {
+    //   $result = $this->destroyActionService->destroy($this->dominion, ['ore_mine' => 100]);
+    // }
   }
 
   function release($tick) {

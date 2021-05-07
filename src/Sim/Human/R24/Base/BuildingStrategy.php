@@ -34,15 +34,17 @@ class BuildingStrategy extends BaseBuildingStrategy
     $acres_to_explore['land_plain'] += $this->to_explore_by_percentage('building_home', $new_acres, $home_percentage, 'plain', $capacity);
     $capacity = $max_afford - array_sum($acres_to_explore);
 
+    $percentage = 0.06 + $tick / 40000; # slowly scale up farms
+    $acres_to_explore['land_plain'] += $this->to_explore_by_percentage('building_farm', $new_acres, $percentage, 'plain', $capacity);
+    $capacity = $max_afford - array_sum($acres_to_explore);
 
-    if($this->current_acres <= 1900) {
-      $percentage = 0.06 + $tick / 40000; # slowly scale up farms
-      $acres_to_explore['land_plain'] += $this->to_explore_by_percentage('building_farm', $new_acres, $percentage, 'plain', $capacity);
+    if($this->current_acres < 2100) {
+      $acres_to_explore['land_forest'] += $this->to_explore_by_percentage('building_lumberyard', $new_acres, 0.04, 'forest', $capacity);
+      $capacity = $max_afford - array_sum($acres_to_explore);
+    } else {
+      $acres_to_explore['land_forest'] += $this->to_explore_by_percentage('building_lumberyard', $new_acres, 0.06, 'forest', $capacity);
       $capacity = $max_afford - array_sum($acres_to_explore);
     }
-
-    $acres_to_explore['land_forest'] += $this->to_explore_by_percentage('building_lumberyard', $new_acres, 0.04, 'forest', $capacity);
-    $capacity = $max_afford - array_sum($acres_to_explore);
 
     $acres_to_explore['land_mountain'] += $this->to_explore_by_percentage('building_ore_mine', $new_acres, 0.04, 'mountain', $capacity);
     $capacity = $max_afford - array_sum($acres_to_explore);
@@ -94,14 +96,12 @@ class BuildingStrategy extends BaseBuildingStrategy
 
     // FARMS
     $barren = $this->landCalculator->getTotalBarrenLandByLandType($dominion, 'plain');
-    if($this->current_acres <= 1900) {
-      $percentage = 0.06 + $tick / 40000;
-      $farms_needed = round($this->current_acres * $percentage - $this->dominion->building_farm - $this->incoming_buildings['building_farm']);
-      if($farms_needed > 0 && $barren > 0) {
-        $buildings_to_build['building_farm'] = min($farms_needed, $capacity, $barren);
-        // print "acres paid: {$this->paid_acres}; farms owned: {$this->dominion->building_farm}; farms incoming: {$this->incoming_buildings['building_farm']}; farms needed: {$farms_needed}; barren plain: {$barren}; building farms: {$buildings_to_build['building_farm']}<br />";
-        $capacity = $max_afford - array_sum($buildings_to_build);
-      }
+    $percentage = 0.06 + $tick / 40000;
+    $farms_needed = round($this->current_acres * $percentage - $this->dominion->building_farm - $this->incoming_buildings['building_farm']);
+    if($farms_needed > 0 && $barren > 0) {
+      $buildings_to_build['building_farm'] = min($farms_needed, $capacity, $barren);
+      // print "acres paid: {$this->paid_acres}; farms owned: {$this->dominion->building_farm}; farms incoming: {$this->incoming_buildings['building_farm']}; farms needed: {$farms_needed}; barren plain: {$barren}; building farms: {$buildings_to_build['building_farm']}<br />";
+      $capacity = $max_afford - array_sum($buildings_to_build);
     }
 
     // SMITHY
@@ -110,8 +110,7 @@ class BuildingStrategy extends BaseBuildingStrategy
 
       $owned_smithy = $this->dominion->building_smithy + $this->incoming_buildings['building_smithy'];
       $max_smithy = round((0.18 * $this->current_acres) - $owned_smithy);
-      $buildings_to_build['building_home'] = min($capacity, $barren, $max_smithy);
-
+      $buildings_to_build['building_smithy'] = min($capacity, $barren, $max_smithy);
       $capacity = $max_afford - array_sum($buildings_to_build);
     }
 
@@ -141,6 +140,9 @@ class BuildingStrategy extends BaseBuildingStrategy
     $owned_homes = $this->dominion->building_home + $this->incoming_buildings['building_home'];
     $max_homes = round((0.18 * $this->current_acres) - $owned_homes);
     $buildings_to_build['building_home'] = min($capacity, $barren, $max_homes);
+    if($buildings_to_build['building_home'] < 0) {
+      $buildings_to_build['building_home'] = 0;
+    }
     $capacity = $max_afford - array_sum($buildings_to_build);
 
     $barren = $this->landCalculator->getTotalBarrenLandByLandType($dominion, 'plain');
