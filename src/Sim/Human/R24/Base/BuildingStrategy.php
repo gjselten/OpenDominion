@@ -149,9 +149,13 @@ class BuildingStrategy extends BaseBuildingStrategy
     $barren -= $buildings_to_build['building_farm'];
     $barren -= $buildings_to_build['building_smithy'];
     $barren -= $buildings_to_build['building_home'];
-    $buildings_to_build['building_masonry'] = min($capacity, $barren);
-    $capacity = $max_afford - array_sum($buildings_to_build);
-
+    // if($this->dominion->building_masonry < 100 ) { // get extra homes for conversion
+    //   $buildings_to_build['building_masonry'] = min($capacity, $barren);
+    //   $capacity = $max_afford - array_sum($buildings_to_build);
+    // } else {
+      $buildings_to_build['building_home'] += min($capacity, $barren);
+      $capacity = $max_afford - array_sum($buildings_to_build);
+    // }
 
     return $buildings_to_build;
   }

@@ -47,30 +47,30 @@ class TrainingStrategy extends BaseTrainingStrategy
     if(array_sum($to_train) > 0) {
       return $to_train;
     }
-
-    $incoming_wizards = $this->queueService->getTrainingQueueTotalByResource($dominion, 'military_wizards');
-    $wizards = $dominion->military_wizards + $incoming_wizards;
-    $incoming_mages = $this->queueService->getTrainingQueueTotalByResource($dominion, 'military_archmages');
-    $mages = $dominion->military_archmages + $incoming_mages;
-
-
-    if(($wizards + $mages) < 4500) {
-      $max_trainable = $this->trainingCalculator->getMaxTrainable($dominion)['wizards'];
-      $to_train['military_wizards'] = min($max_trainable, 4500 - $dominion->military_wizards - $incoming_wizards);
-    }
-
-    if(array_sum($to_train) > 0) {
-      return $to_train;
-    }
-
-    if($mages < 4500) {
-      $max_trainable = $this->trainingCalculator->getMaxTrainable($dominion)['archmages'];
-      $to_train['military_archmages'] = min($max_trainable, 4500 - $dominion->military_archmages - $incoming_mages);
-    }
-
-    if(array_sum($to_train) > 0) {
-      return $to_train;
-    }
+    //
+    // $incoming_wizards = $this->queueService->getTrainingQueueTotalByResource($dominion, 'military_wizards');
+    // $wizards = $dominion->military_wizards + $incoming_wizards;
+    // $incoming_mages = $this->queueService->getTrainingQueueTotalByResource($dominion, 'military_archmages');
+    // $mages = $dominion->military_archmages + $incoming_mages;
+    //
+    //
+    // if(($wizards + $mages) < 4500) {
+    //   $max_trainable = $this->trainingCalculator->getMaxTrainable($dominion)['wizards'];
+    //   $to_train['military_wizards'] = min($max_trainable, 4500 - $dominion->military_wizards - $incoming_wizards);
+    // }
+    //
+    // if(array_sum($to_train) > 0) {
+    //   return $to_train;
+    // }
+    //
+    // if($mages < 4500) {
+    //   $max_trainable = $this->trainingCalculator->getMaxTrainable($dominion)['archmages'];
+    //   $to_train['military_archmages'] = min($max_trainable, 4500 - $dominion->military_archmages - $incoming_mages);
+    // }
+    //
+    // if(array_sum($to_train) > 0) {
+    //   return $to_train;
+    // }
 
     if($acres >= 3000) {
       $max_trainable = $this->trainingCalculator->getMaxTrainable($dominion)['unit4'];

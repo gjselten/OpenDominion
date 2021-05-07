@@ -11,6 +11,7 @@ class ImprovementStrategy extends BaseImprovementStrategy
       ['keep', 22],
       ['science', 9],
       ['walls', 13],
+      ['keep', 25],
       ['forges', 13],
       ['keep', 30],
     ];
