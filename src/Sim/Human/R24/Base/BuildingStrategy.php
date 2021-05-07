@@ -27,19 +27,16 @@ class BuildingStrategy extends BaseBuildingStrategy
 
     $new_acres = $this->paid_acres + $capacity;
 
-    // $wanted_homes = round($this->homes_for_full_employment($tick) * 0.);
-    // // print "tick $tick: wanted homes: $wanted_homes<br />";
-    // $wanted_homes -= (round($this->incoming_acres['land_plain'] - $this->incoming_acres['land_plain'] * 0.06));
-    // if($wanted_homes > 0) {
-    //   $acres_to_explore['land_plain'] += min($wanted_homes, $capacity);
-    //   $capacity = $max_afford - array_sum($acres_to_explore);
-    // }
-    $acres_to_explore['land_plain'] += $this->to_explore_by_percentage('building_home', $new_acres, 0.15, 'plain', $capacity);
+    $home_percentage = 0.15;
+    if($tick > 160) { // day 11+
+      $home_percentage = 0.18;
+    }
+    $acres_to_explore['land_plain'] += $this->to_explore_by_percentage('building_home', $new_acres, $home_percentage, 'plain', $capacity);
     $capacity = $max_afford - array_sum($acres_to_explore);
 
 
     if($this->current_acres <= 1900) {
-      $percentage = 0.06 + $tick / 40000;
+      $percentage = 0.06 + $tick / 40000; # slowly scale up farms
       $acres_to_explore['land_plain'] += $this->to_explore_by_percentage('building_farm', $new_acres, $percentage, 'plain', $capacity);
       $capacity = $max_afford - array_sum($acres_to_explore);
     }
@@ -47,7 +44,7 @@ class BuildingStrategy extends BaseBuildingStrategy
     $acres_to_explore['land_forest'] += $this->to_explore_by_percentage('building_lumberyard', $new_acres, 0.04, 'forest', $capacity);
     $capacity = $max_afford - array_sum($acres_to_explore);
 
-    $acres_to_explore['land_mountain'] += $this->to_explore_by_percentage('building_ore_mine', $new_acres, 0.05, 'mountain', $capacity);
+    $acres_to_explore['land_mountain'] += $this->to_explore_by_percentage('building_ore_mine', $new_acres, 0.04, 'mountain', $capacity);
     $capacity = $max_afford - array_sum($acres_to_explore);
 
     $acres_to_explore['land_swamp'] += $this->to_explore_by_percentage('building_tower', $new_acres, 0.05, 'swamp', $capacity);
@@ -61,8 +58,11 @@ class BuildingStrategy extends BaseBuildingStrategy
       $capacity = $max_afford - array_sum($acres_to_explore);
     }
 
-    $acres_to_explore['land_cavern'] += $capacity;
-    // print "explore: explore remaining capacity {$capacity} as plain";
+    $acres_to_explore['land_cavern'] += $this->build_to_max_nr('building_diamond_mine', 700, 'cavern', $capacity);
+    $capacity = $max_afford - array_sum($acres_to_explore);
+
+    $acres_to_explore['land_plain'] += $capacity;
+    $capacity = $max_afford - array_sum($acres_to_explore);
 
     return $acres_to_explore;
   }
@@ -96,7 +96,6 @@ class BuildingStrategy extends BaseBuildingStrategy
     $barren = $this->landCalculator->getTotalBarrenLandByLandType($dominion, 'plain');
     if($this->current_acres <= 1900) {
       $percentage = 0.06 + $tick / 40000;
-      print " building " . round($percentage * 100, 2) . " farms.<br />";
       $farms_needed = round($this->current_acres * $percentage - $this->dominion->building_farm - $this->incoming_buildings['building_farm']);
       if($farms_needed > 0 && $barren > 0) {
         $buildings_to_build['building_farm'] = min($farms_needed, $capacity, $barren);
@@ -108,7 +107,11 @@ class BuildingStrategy extends BaseBuildingStrategy
     // SMITHY
     if($this->current_acres > 2000) {
       $barren -= $buildings_to_build['building_farm'];
-      $buildings_to_build['building_smithy'] = min($capacity, $barren);
+
+      $owned_smithy = $this->dominion->building_smithy + $this->incoming_buildings['building_smithy'];
+      $max_smithy = round((0.18 * $this->current_acres) - $owned_smithy);
+      $buildings_to_build['building_home'] = min($capacity, $barren, $max_smithy);
+
       $capacity = $max_afford - array_sum($buildings_to_build);
     }
 
@@ -133,47 +136,21 @@ class BuildingStrategy extends BaseBuildingStrategy
     $capacity = $max_afford - array_sum($buildings_to_build);
 
     $barren = $this->landCalculator->getTotalBarrenLandByLandType($dominion, 'plain');
-    $buildings_to_build['building_home'] = min($capacity, $barren);
+    $barren -= $buildings_to_build['building_farm'];
+    $barren -= $buildings_to_build['building_smithy'];
+    $owned_homes = $this->dominion->building_home + $this->incoming_buildings['building_home'];
+    $max_homes = round((0.18 * $this->current_acres) - $owned_homes);
+    $buildings_to_build['building_home'] = min($capacity, $barren, $max_homes);
     $capacity = $max_afford - array_sum($buildings_to_build);
 
+    $barren = $this->landCalculator->getTotalBarrenLandByLandType($dominion, 'plain');
+    $barren -= $buildings_to_build['building_farm'];
+    $barren -= $buildings_to_build['building_smithy'];
+    $barren -= $buildings_to_build['building_home'];
+    $buildings_to_build['building_masonry'] = min($capacity, $barren);
+    $capacity = $max_afford - array_sum($buildings_to_build);
+
+
     return $buildings_to_build;
-  }
-
-  function get_homes_to_explore() {
-
-  }
-
-  function get_homes_to_build() {
-    $jobs = $this->populationCalculator->getEmploymentJobs($this->dominion);
-    $incoming_jobs = 20 * (array_sum($this->incoming_buildings) - $this->incoming_buildings['building_home'] - $this->incoming_buildings['building_barracks']);
-    // $incoming_jobs += 20 * array_sum($this->incoming_acres) - $this->incoming_acres['land_cavern'];
-    $total_jobs = $jobs + $incoming_jobs;
-
-    $barren = $this->landCalculator->getTotalBarrenLand($this->dominion);
-    $buildings = $this->buildingCalculator->getTotalBuildings($this->dominion);
-    $incoming_buildings = array_sum($this->incoming_buildings);
-    $homes = $this->dominion->building_home;
-    $incoming_homes = $this->incoming_buildings['building_home'];
-    $raw_pop_space = $barren * 5 + $buildings * 15 + $incoming_buildings * 15 + $homes * 15 + $incoming_homes * 15;
-    $pop_mods = $this->populationCalculator->getMaxPopulationMultiplier($this->dominion);
-    $pop_space = $raw_pop_space * $pop_mods;
-
-    $military = $this->populationCalculator->getPopulationMilitary($this->dominion);
-
-    $peasant_space = $pop_space - $military;
-
-    if($total_jobs <= $peasant_space) {
-      return 0;
-    }
-
-    $jobs_to_fill = $total_jobs - $peasant_space;
-    $homes_needed = $jobs_to_fill / (30 * $pop_mods);
-    $homes_to_build = round($homes_needed - $this->incoming_buildings['building_home']);
-    if($homes_to_build <= 0) {
-      return 0;
-    }
-
-    // print "JOBS: $total_jobs; PEASANT SPACE: $peasant_space; HOMES TO BUILD: $homes_to_build<br />";
-    return $homes_to_build;
   }
 }
