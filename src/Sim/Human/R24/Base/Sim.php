@@ -15,7 +15,7 @@ use OpenDominion\Sim\BaseTechStrategy;
 class Sim extends Base
 {
   function ticks_to_run() {
-    return 24 * 10;
+    return 24 * 12;
   }
 
   function setup($tick) {

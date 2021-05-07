@@ -39,7 +39,8 @@ class BuildingStrategy extends BaseBuildingStrategy
 
 
     if($this->current_acres <= 1900) {
-      $acres_to_explore['land_plain'] += $this->to_explore_by_percentage('building_farm', $new_acres, 0.06, 'plain', $capacity);
+      $percentage = 0.06 + $tick / 40000;
+      $acres_to_explore['land_plain'] += $this->to_explore_by_percentage('building_farm', $new_acres, $percentage, 'plain', $capacity);
       $capacity = $max_afford - array_sum($acres_to_explore);
     }
 
@@ -94,7 +95,9 @@ class BuildingStrategy extends BaseBuildingStrategy
     // FARMS
     $barren = $this->landCalculator->getTotalBarrenLandByLandType($dominion, 'plain');
     if($this->current_acres <= 1900) {
-      $farms_needed = round($this->current_acres * 0.06 - $this->dominion->building_farm - $this->incoming_buildings['building_farm']);
+      $percentage = 0.06 + $tick / 40000;
+      print " building " . round($percentage * 100, 2) . " farms.<br />";
+      $farms_needed = round($this->current_acres * $percentage - $this->dominion->building_farm - $this->incoming_buildings['building_farm']);
       if($farms_needed > 0 && $barren > 0) {
         $buildings_to_build['building_farm'] = min($farms_needed, $capacity, $barren);
         // print "acres paid: {$this->paid_acres}; farms owned: {$this->dominion->building_farm}; farms incoming: {$this->incoming_buildings['building_farm']}; farms needed: {$farms_needed}; barren plain: {$barren}; building farms: {$buildings_to_build['building_farm']}<br />";
