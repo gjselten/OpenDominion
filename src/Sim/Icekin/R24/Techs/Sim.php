@@ -148,6 +148,19 @@ class Sim extends Base
     }
   }
 
+  function specDp() {
+    return 3;
+  }
+  function eliteDp() {
+    return 6;
+  }
+  function specOp() {
+    return 3;
+  }
+  function eliteOp() {
+    return 7;
+  }
+
   function createOopDom() {
     $user = User::create([
         'email' => "email" . rand(0,999999999) . "@example.com",
@@ -208,8 +221,8 @@ class Sim extends Base
 
       'land_plain' => 398,
       'land_mountain' => 258,
-      'land_swamp' => 90,
-      'land_cavern' => 0,
+      'land_swamp' => 40,
+      'land_cavern' => 50,
       'land_forest' => 33,
       'land_hill' => 6,
       'land_water' => 0,

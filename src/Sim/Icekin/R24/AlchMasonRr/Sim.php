@@ -1,15 +1,15 @@
 <?php
 
-namespace OpenDominion\Sim\Human\R24\Base;
+namespace OpenDominion\Sim\Icekin\R24\AlchMasonRr;
 
 use OpenDominion\Models\User;
 use OpenDominion\Models\Dominion;
 
 use OpenDominion\Sim\Base;
-use OpenDominion\Sim\Human\R24\Base\BuildingStrategy;
-use OpenDominion\Sim\Human\R24\Base\TrainingStrategy;
-use OpenDominion\Sim\Human\R24\Base\ImprovementStrategy;
-use OpenDominion\Sim\Human\R24\Base\TechStrategy;
+use OpenDominion\Sim\Icekin\R24\AlchMasonRr\BuildingStrategy;
+use OpenDominion\Sim\Icekin\R24\AlchMasonRr\TrainingStrategy;
+use OpenDominion\Sim\Icekin\R24\AlchMasonRr\ImprovementStrategy;
+use OpenDominion\Sim\Icekin\R24\AlchMasonRr\TechStrategy;
 use OpenDominion\Sim\BaseTechStrategy;
 
 class Sim extends Base
@@ -40,7 +40,7 @@ class Sim extends Base
   }
 
   function get_investment_into_caste($tick) {
-    return $this->improvementStrategy->get_investment_to_do($this->dominion, $tick, $this->dominion->resource_gems, $this->improvementCalculator);
+    return $this->improvementStrategy->get_investment_to_do($this->dominion, $tick, $this->dominion->resource_ore, $this->improvementCalculator);
   }
 
   function pick_tech($tick) {
@@ -48,7 +48,7 @@ class Sim extends Base
   }
 
   function get_self_spells_to_cast($tick) {
-    return ['midas_touch', 'gaias_watch', 'ares_call', 'mining_strength'];
+    return ['midas_touch', 'gaias_watch', 'blizzard', 'mining_strength'];
   }
 
   function get_incoming_acres_by_landtype() {
@@ -74,35 +74,14 @@ class Sim extends Base
   }
 
   function destroy($tick) {
-    // if($tick == 409) {
-    //   // QUICKFIX HACK. GET SOME LUMBER GOING
-    //   $result = $this->bankActionService->exchange(
-    //       $this->dominion,
-    //       'resource_ore',
-    //       'resource_lumber',
-    //       $this->dominion->resource_ore
-    //   );
-    // }
-    // if($tick == 408) {
-    //   try {
-    //     $result = $this->destroyActionService->destroy($this->dominion, ['factory' => 59]);
-    //     $result = $this->rezoneActionService->rezone(
-    //         $this->dominion,
-    //         ['hill' => 59],
-    //         ['mountain' => 59]
-    //     );
-    //
-    //     $result = $this->bankActionService->exchange(
-    //         $this->dominion,
-    //         'resource_ore',
-    //         'resource_lumber',
-    //         $this->dominion->resource_ore
-    //     );
-    //   } catch (Exception $e) {
-    //     print "DESTROYING FACTORIES ERROR: " . $e->getMessage();
-    //     exit();
-    //   }
-    // }
+    if($tick == 432) {
+      $result = $this->destroyActionService->destroy($this->dominion, ['alchemy' => 150]);
+      print "tick $tick: destroyed 150 alchs<br />";
+    }
+    if($tick == 442) {
+      $result = $this->destroyActionService->destroy($this->dominion, ['alchemy' => 86]);
+      print "tick $tick: destroyed 86 alchs<br />";
+    }
 
     // if($tick == 440) {
     //   $result = $this->destroyActionService->destroy($this->dominion, ['ore_mine' => 100]);
@@ -129,6 +108,25 @@ class Sim extends Base
     }
   }
 
+  function invest($tick) {
+    $investment = $this->get_investment_into_caste($tick);
+
+    if(array_sum($investment) === 0) {
+      return;
+    }
+
+    try {
+        $result = $this->improveActionService->improve(
+            $this->dominion,
+            'ore',
+            $investment
+        );
+    } catch (Exception $e) {
+      print "ERROR: INVESTING FAILED: {$e->getMessage()}." . print_r($investment, true) . "<br />";
+      exit();
+    }
+  }
+
   function specDp() {
     return 3;
   }
@@ -139,7 +137,7 @@ class Sim extends Base
     return 3;
   }
   function eliteOp() {
-    return 6;
+    return 7;
   }
 
   function createOopDom() {
@@ -154,7 +152,7 @@ class Sim extends Base
     $user_id = $user->id;
     $round_id = 1;
     $realm_id = 2;
-    $race_id = 7;
+    $race_id = 8;
 
     return Dominion::create([
       'user_id' => $user_id,
@@ -167,7 +165,7 @@ class Sim extends Base
       'name' => 'domname'  . rand(0,999999999),
       'prestige' => 250,
 
-      'peasants' => 10000,
+      'peasants' => 10426,
       'peasants_last_hour' => 0,
 
       'draft_rate' => 90,
@@ -175,11 +173,11 @@ class Sim extends Base
       'spy_strength' => 100,
       'wizard_strength' => 100,
 
-      'resource_platinum' => 255354,
-      'resource_food' => 10000,
-      'resource_lumber' => 11000,
+      'resource_platinum' => 339011,
+      'resource_food' => 1168,
+      'resource_lumber' => 6049,
       'resource_mana' => 10000,
-      'resource_ore' => 100000,
+      'resource_ore' => 67986,
       'resource_gems' => 0,
       'resource_tech' => 0,
       'resource_boats' => 0,
@@ -191,34 +189,34 @@ class Sim extends Base
       'improvement_walls' => 0,
       'improvement_harbor' => 0,
 
-      'military_draftees' => 500,
+      'military_draftees' => 554,
       'military_unit1' => 0,
-      'military_unit2' => 1000,
-      'military_unit3' => 550,
+      'military_unit2' => 876,
+      'military_unit3' => 675,
       'military_unit4' => 0,
       'military_spies' => 0,
       'military_wizards' => 0,
       'military_archmages' => 0,
 
-      'land_plain' => 446,
-      'land_mountain' => 28,
-      'land_swamp' => 38,
-      'land_cavern' => 219,
+      'land_plain' => 398,
+      'land_mountain' => 308,
+      'land_swamp' => 40,
+      'land_cavern' => 0,
       'land_forest' => 33,
       'land_hill' => 6,
       'land_water' => 0,
 
-      'building_home' => 26,
-      'building_alchemy' => 246,
-      'building_farm' => 35,
-      'building_smithy' => 139,
+      'building_home' => 30,
+      'building_alchemy' => 236,
+      'building_farm' => 20,
+      'building_smithy' => 142,
       'building_masonry' => 0,
-      'building_ore_mine' => 28,
+      'building_ore_mine' => 278,
       'building_gryphon_nest' => 0,
-      'building_tower' => 38,
+      'building_tower' => 40,
       'building_wizard_guild' => 0,
       'building_temple' => 0,
-      'building_diamond_mine' => 219,
+      'building_diamond_mine' => 0,
       'building_school' => 0,
       'building_lumberyard' => 33,
       'building_forest_haven' => 0,

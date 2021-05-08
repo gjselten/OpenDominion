@@ -274,6 +274,7 @@ class Base
     }
     catch(Exception $e) {
       print "ERROR: TRAINING FAILED: " . $e->getMessage();
+      print_r($military_to_train);
       exit();
     }
   }
@@ -352,9 +353,33 @@ class Base
     $this->ticker->performTick($this->round, $this->dominion);
   }
 
+  function specDp() {
+    return 3;
+  }
+  function eliteDp() {
+    return 6;
+  }
+  function specOp() {
+    return 3;
+  }
+  function eliteOp() {
+    return 6;
+  }
+
   function showState($tick) {
-    $dp = round($this->militaryCalculator->getDefensivePower($this->dominion));
+
+    $dp_elites = $this->dominion->military_unit3 + $this->queueService->getTrainingQueueTotalByResource($this->dominion, "military_unit3");
+    $dp_specs = $this->dominion->military_unit2 + $this->queueService->getTrainingQueueTotalByResource($this->dominion, "military_unit2");
     $dp_mods = round($this->militaryCalculator->getDefensivePowerMultiplier($this->dominion) * 100 - 100, 2);
+    $raw_dp = round($dp_elites * $this->eliteDp() + $dp_specs * $this->specDp());
+    $mod_dp = round($raw_dp * (1 + $dp_mods / 100));
+
+    $op_elites = $this->dominion->military_unit4 + $this->queueService->getTrainingQueueTotalByResource($this->dominion, "military_unit4");
+    $op_specs = $this->dominion->military_unit1 + $this->queueService->getTrainingQueueTotalByResource($this->dominion, "military_unit1");
+    $op_mods = round($this->militaryCalculator->getOffensivePowerMultiplier($this->dominion) * 100 - 100, 2);
+    $raw_op = round($op_elites * $this->eliteOp() + $op_specs * $this->specOp());
+    $mod_op = round($raw_op * (1 + $op_mods / 100));
+
     $incoming_buildings = $this->get_incoming_buildings();
     $incoming_land = $this->get_incoming_acres_by_landtype();
     $science = $this->improvementCalculator->getImprovementMultiplierBonus($this->dominion, 'science') * 100;
@@ -364,13 +389,6 @@ class Base
     $day = floor(($tick + 72) / 24) + 1;
     $hour = $tick % 24;
     $unlocked_techs = $this->dominion->techs->pluck('name')->all();
-
-    // converter stuff
-    $op_elites = $this->dominion->military_unit4 + $this->queueService->getTrainingQueueTotalByResource($this->dominion, "military_unit4");
-    $op_mods = round($this->militaryCalculator->getOffensivePowerMultiplier($this->dominion) * 100 - 100, 2);
-    $raw_op = round($op_elites * 7);
-    $mod_op = round($raw_op * (1 + $op_mods / 100));
-    $dp = round($dp - $this->dominion->military_unit4 * 2 * $this->militaryCalculator->getDefensivePowerMultiplier($this->dominion));
 
     print "
     <div style='border: 1px solid #000000; margin-top: 10px;'>
@@ -394,7 +412,7 @@ class Base
       </td>
       <td style='vertical-align: top; padding-right: 10px;'>
         <table>
-          <tr><td>DP</td><td>{$dp}</td></tr>
+          <tr><td>DP</td><td>{$mod_dp}</td></tr>
           <tr><td>OP</td><td>{$mod_op}</td></tr>
           <tr><td>DP mods</td><td>{$dp_mods}%</td></tr>
           <tr><td>OP mods</td><td>{$op_mods}%</td></tr>
@@ -462,7 +480,7 @@ class Base
     </div>
     ";
 
-    $this->logState($tick, $mod_op, $dp);
+    $this->logState($tick, $mod_op, $mod_dp);
   }
 
   function logState($tick, $op, $dp) {
