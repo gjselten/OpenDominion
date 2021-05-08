@@ -1,4 +1,4 @@
-Started sim OpenDominion\Sim\Icekin\R24\Base\Sim at 2021-05-08 07:30:17
+Started sim OpenDominion\Sim\Icekin\R24\Base\Sim at 2021-05-08 07:35:56
 Tick 0 (day 4 hr 0): 805			 op: 0;	dp: 7680;	u1: 0;	u2: 876 (0);	u3: 675 (0);	u4: 0 (0);	peas: 10426
 Tick 12 (day 4 hr 12): 805			 op: 0;	dp: 15083;	u1: 0;	u2: 876 (0);	u3: 1229 (519);	u4: 0 (0);	peas: 10762
 Tick 24 (day 5 hr 0): 894			 op: 0;	dp: 15083;	u1: 0;	u2: 876 (0);	u3: 1748 (0);	u4: 0 (0);	peas: 12329

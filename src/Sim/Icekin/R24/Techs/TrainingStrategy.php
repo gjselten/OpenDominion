@@ -54,9 +54,9 @@ class TrainingStrategy extends BaseTrainingStrategy
     $mages = $dominion->military_archmages + $incoming_mages;
 
 
-    if(($wizards + $mages) < 4500) {
+    if(($wizards + $mages) < 5100) {
       $max_trainable = $this->trainingCalculator->getMaxTrainable($dominion)['wizards'];
-      $to_train['military_wizards'] = min($max_trainable, 4500 - $dominion->military_wizards - $incoming_wizards);
+      $to_train['military_wizards'] = min($max_trainable, 5100 - $dominion->military_wizards - $incoming_wizards);
     }
 
     if(array_sum($to_train) > 0) {
