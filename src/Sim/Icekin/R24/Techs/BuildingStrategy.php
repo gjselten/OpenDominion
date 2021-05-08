@@ -25,6 +25,9 @@ class BuildingStrategy extends BaseBuildingStrategy
       return $acres_to_explore;
     }
 
+    $to_go = 3000 - $this->current_acres - array_sum($this->incoming_acres);
+    $max_afford = min($max_afford, $to_go);
+
     $new_acres = $this->paid_acres + $capacity;
 
     if($this->current_acres <= 1900) {
