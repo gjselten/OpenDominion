@@ -19,10 +19,8 @@ class Sim extends Base
   }
 
   function setup($tick) {
-    $frostmage_dp = $this->militaryCalculator->getUnitPowerWithPerks($this->dominion, null, null, $this->dominion->race->units[2], 'defense');
-
     $this->buildingStrategy = new BuildingStrategy($this->dominion, $this->queueService);
-    $this->trainingStrategy = new TrainingStrategy($this->dominion, 3, $frostmage_dp, $this->queueService, $this->militaryCalculator, $this->trainingCalculator);
+    $this->trainingStrategy = new TrainingStrategy($this->dominion, 3, $this->eliteDp(), $this->queueService, $this->militaryCalculator, $this->trainingCalculator);
     $this->improvementStrategy =  new ImprovementStrategy();
     $this->tech_strategy = new TechStrategy();
   }
@@ -114,9 +112,14 @@ class Sim extends Base
   }
 
   function release($tick) {
-    // if($tick <= 72) {
-    //   return;
-    // }
+    if($tick == 150) {
+      try {
+        $result = $this->releaseActionService->release($this->dominion, ['unit2' => 876]);
+      } catch(Exception $e) {
+        print "ERROR: RELEASING FAILED: {$e->getMessage()}\n";
+        exit();
+      }
+    }
 
     $draftees_to_release = $this->dominion->military_draftees;
     if($draftees_to_release <= 0) {
@@ -170,7 +173,7 @@ class Sim extends Base
     return 3;
   }
   function eliteDp() {
-    return 6;
+    return $this->militaryCalculator->getUnitPowerWithPerks($this->dominion, null, null, $this->dominion->race->units[2], 'defense');
   }
   function specOp() {
     return 3;

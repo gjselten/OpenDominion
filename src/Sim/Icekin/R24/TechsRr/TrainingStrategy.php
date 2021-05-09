@@ -23,7 +23,7 @@ class TrainingStrategy extends BaseTrainingStrategy
     $acres = $landCalculator->getTotalLand($dominion);
 
     $convert = false;
-    if($acres >= 3000) {
+    if($acres >= 3020) {
       $convert = true;
     }
 
