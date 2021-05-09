@@ -21,11 +21,11 @@ class BuildingStrategy extends BaseBuildingStrategy
       'land_water' => 0
     ];
 
-    if($this->current_acres + array_sum($this->incoming_acres) > 3000) {
+    if($this->current_acres + array_sum($this->incoming_acres) > 3020) {
       return $acres_to_explore;
     }
 
-    $to_go = 3000 - $this->current_acres - array_sum($this->incoming_acres);
+    $to_go = 3020 - $this->current_acres - array_sum($this->incoming_acres);
     $max_afford = min($max_afford, $to_go);
 
     $new_acres = $this->paid_acres + $capacity;

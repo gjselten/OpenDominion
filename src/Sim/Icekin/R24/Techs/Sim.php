@@ -110,9 +110,14 @@ class Sim extends Base
   }
 
   function release($tick) {
-    // if($tick <= 72) {
-    //   return;
-    // }
+    if($tick == 150) {
+      try {
+        $result = $this->releaseActionService->release($this->dominion, ['unit2' => 876]);
+      } catch(Exception $e) {
+        print "ERROR: RELEASING FAILED: {$e->getMessage()}\n";
+        exit();
+      }
+    }
 
     $draftees_to_release = $this->dominion->military_draftees;
     if($draftees_to_release <= 0) {
