@@ -1,16 +1,16 @@
 <?php
 
-namespace OpenDominion\Sim\Icekin\R24\Base;
+namespace OpenDominion\Sim\Icekin\R24\HighTechsRr;
 
 use OpenDominion\Models\User;
 use OpenDominion\Models\Dominion;
 
 use OpenDominion\Sim\Base;
-use OpenDominion\Sim\Icekin\R24\Base\BuildingStrategy;
-use OpenDominion\Sim\Icekin\R24\Base\TrainingStrategy;
-use OpenDominion\Sim\Icekin\R24\Base\ImprovementStrategy;
-use OpenDominion\Sim\Icekin\R24\Base\TechStrategy;
-use OpenDominion\Sim\BaseTechStrategy;
+use OpenDominion\Sim\Icekin\R24\HighTechsRr\BuildingStrategy;
+use OpenDominion\Sim\Icekin\R24\HighTechsRr\TrainingStrategy;
+use OpenDominion\Sim\Icekin\R24\HighTechsRr\ImprovementStrategy;
+use OpenDominion\Sim\Icekin\R24\HighTechsRr\TechStrategy;
+// use OpenDominion\Sim\BaseTechStrategy;
 
 class Sim extends Base
 {
@@ -24,7 +24,7 @@ class Sim extends Base
     $this->buildingStrategy = new BuildingStrategy($this->dominion, $this->queueService);
     $this->trainingStrategy = new TrainingStrategy($this->dominion, 3, $frostmage_dp, $this->queueService, $this->militaryCalculator, $this->trainingCalculator);
     $this->improvementStrategy =  new ImprovementStrategy();
-    $this->tech_strategy = new BaseTechStrategy();
+    $this->tech_strategy = new TechStrategy();
   }
 
   function get_buildings_to_construct($tick, $max_afford) {
@@ -74,38 +74,13 @@ class Sim extends Base
   }
 
   function destroy($tick) {
-    // if($tick == 409) {
-    //   // QUICKFIX HACK. GET SOME LUMBER GOING
-    //   $result = $this->bankActionService->exchange(
-    //       $this->dominion,
-    //       'resource_ore',
-    //       'resource_lumber',
-    //       $this->dominion->resource_ore
-    //   );
-    // }
-    // if($tick == 408) {
-    //   try {
-    //     $result = $this->destroyActionService->destroy($this->dominion, ['factory' => 59]);
-    //     $result = $this->rezoneActionService->rezone(
-    //         $this->dominion,
-    //         ['hill' => 59],
-    //         ['mountain' => 59]
-    //     );
-    //
-    //     $result = $this->bankActionService->exchange(
-    //         $this->dominion,
-    //         'resource_ore',
-    //         'resource_lumber',
-    //         $this->dominion->resource_ore
-    //     );
-    //   } catch (Exception $e) {
-    //     print "DESTROYING FACTORIES ERROR: " . $e->getMessage();
-    //     exit();
-    //   }
-    // }
-
-    if($tick == 440) {
-      $result = $this->destroyActionService->destroy($this->dominion, ['ore_mine' => 100]);
+    if($tick == 432) {
+      $result = $this->destroyActionService->destroy($this->dominion, ['alchemy' => 150]);
+      print "tick $tick: destroyed 150 alchs<br />";
+    }
+    if($tick == 442) {
+      $result = $this->destroyActionService->destroy($this->dominion, ['alchemy' => 86]);
+      print "tick $tick: destroyed 86 alchs<br />";
     }
   }
 
@@ -150,6 +125,20 @@ class Sim extends Base
     } catch (Exception $e) {
       print "ERROR: INVESTING FAILED: {$e->getMessage()}." . print_r($investment, true) . "<br />";
       exit();
+    }
+
+    $investment = $this->improvementStrategy->get_investment_to_do($this->dominion, $tick, $this->dominion->resource_gems, $this->improvementCalculator);
+    if(array_sum($investment) > 0) {
+      try {
+          $result = $this->improveActionService->improve(
+              $this->dominion,
+              'gems',
+              $investment
+          );
+      } catch (Exception $e) {
+        print "ERROR: INVESTING FAILED: {$e->getMessage()}." . print_r($investment, true) . "<br />";
+        exit();
+      }
     }
   }
 
@@ -225,9 +214,9 @@ class Sim extends Base
       'military_archmages' => 0,
 
       'land_plain' => 398,
-      'land_mountain' => 308,
+      'land_mountain' => 208,
       'land_swamp' => 40,
-      'land_cavern' => 0,
+      'land_cavern' => 100,
       'land_forest' => 33,
       'land_hill' => 6,
       'land_water' => 0,
@@ -237,13 +226,13 @@ class Sim extends Base
       'building_farm' => 20,
       'building_smithy' => 142,
       'building_masonry' => 0,
-      'building_ore_mine' => 278,
+      'building_ore_mine' => 178,
       'building_gryphon_nest' => 0,
       'building_tower' => 40,
       'building_wizard_guild' => 0,
       'building_temple' => 0,
       'building_diamond_mine' => 0,
-      'building_school' => 0,
+      'building_school' => 100,
       'building_lumberyard' => 33,
       'building_forest_haven' => 0,
       'building_factory' => 6,
