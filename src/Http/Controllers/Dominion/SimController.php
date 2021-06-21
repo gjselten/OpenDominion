@@ -19,15 +19,16 @@ use OpenDominion\Services\Dominion\ProtectionService;
 use OpenDominion\Services\Dominion\QueueService;
 // use OpenDominion\Sim\Merfolk\LowSchools\Sim;
 // use OpenDominion\Sim\Woodelf\LowSchools\Sim;
-// use OpenDominion\Sim\Firewalker\Alchs\Sim;
+use OpenDominion\Sim\Firewalker\TechsRr\Sim;
 // use OpenDominion\Sim\Icekin\R24\Base\Sim;
 // use OpenDominion\Sim\Icekin\R24\AlchMasonRr\Sim;
 // use OpenDominion\Sim\Icekin\R24\Techs\Sim;
 // use OpenDominion\Sim\Icekin\R24\TechsRr\Sim;
-use OpenDominion\Sim\Icekin\R24\TechsRrAlchMasonRr\Sim;
+// use OpenDominion\Sim\Icekin\R24\TechsRrAlchMasonRr\Sim;
 // use OpenDominion\Sim\Icekin\R24\HighTechsRr\Sim;
 // use OpenDominion\Sim\Human\Converter\Base\Sim;
 // use OpenDominion\Sim\Human\R24\Base\Sim;
+// use OpenDominion\Sim\Human\R24\Alch\Sim;
 use DB;
 
 // use LaravelDoctrine\ORM\Configuration\Connections\ConnectionManager;
