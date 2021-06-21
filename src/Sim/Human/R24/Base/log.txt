@@ -1,4 +1,4 @@
-Started sim OpenDominion\Sim\Human\R24\Base\Sim at 2021-05-07 21:03:46
+Started sim OpenDominion\Sim\Human\R24\Base\Sim at 2021-05-12 14:50:41
 Tick 0 (day 4 hr 0): 790			 op: 0;	dp: 6930;	u1: 0;	u2: 1000 (0);	u3: 550 (0);	u4: 0 (0);	peas: 10172
 Tick 12 (day 4 hr 12): 790			 op: 0;	dp: 13200;	u1: 0;	u2: 1000 (0);	u3: 878 (622);	u4: 0 (0);	peas: 10586
 Tick 24 (day 5 hr 0): 836			 op: 0;	dp: 13200;	u1: 0;	u2: 1000 (0);	u3: 1500 (0);	u4: 0 (0);	peas: 11387

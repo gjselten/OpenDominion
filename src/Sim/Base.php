@@ -81,6 +81,8 @@ class Base
 
   public function runSim() {
     for($tick = 0; $tick < $this->ticks_to_run(); $tick++) {
+      print "tick $tick: platinum: {$this->dominion->resource_platinum} <br />";
+
       $this->setup($tick);
       $this->castSpells($tick);
       $this->takeLandBonus($tick);
@@ -173,7 +175,7 @@ class Base
     }
 
     try {
-      // print "tick $tick: taking daily land bonus<br />";
+      print "tick $tick: taking daily land bonus<br />";
       $result = $this->dailyBonusesActionService->claimLand($this->dominion);
     } catch (Exception $e) {
       print "ERROR: TAKING DAILY LAND BONUS FAILED: " . $e->getMessage();
@@ -187,7 +189,7 @@ class Base
     }
 
     try {
-      // print "tick $tick: daily platinum bonus: taking daily platinum bonus\n";
+      print "tick $tick: daily platinum bonus: taking daily platinum bonus\n";
       $result = $this->dailyBonusesActionService->claimPlatinum($this->dominion);
     } catch (Exception $e) {
       print "ERROR: TAKING DAILY PLATINUM BONUS FAILED: " . $e->getMessage();
@@ -250,7 +252,7 @@ class Base
       return;
     }
 
-    // print "tick $tick: build: " . print_r(array_filter($this->buildings_to_build), true) . "<br />";
+    print "tick $tick: build: " . print_r(array_filter($this->buildings_to_build), true) . "<br />";
     try {
       $result = $this->constructionActionService->construct($this->dominion, $this->buildings_to_build);
     } catch(Exception $e) {
@@ -269,7 +271,7 @@ class Base
     }
 
     try {
-      // print "tick $tick: training " . print_r(array_filter($military_to_train), true) . "<br />";
+      print "tick $tick: training " . print_r(array_filter($military_to_train), true) . "<br />";
       $result = $this->militaryTrainActionService->train($this->dominion, $military_to_train);
     }
     catch(Exception $e) {
@@ -294,7 +296,7 @@ class Base
     }
 
     try {
-      // print "tick $tick: explore: explore {$max_afford} acres." . print_r(array_filter($acres_to_explore), true) . "<br />";
+      print "tick $tick: explore: explore {$max_afford} acres." . print_r(array_filter($acres_to_explore), true) . "<br />";
       $result = $this->exploreActionService->explore($this->dominion, $acres_to_explore);
     } catch(Exception $e) {
       print "ERROR: EXPLORING FAILED IN TICK $tick: " . $e->getMessage();
@@ -333,7 +335,7 @@ class Base
 
     // print "release: release all ({$draftees_to_release}) draftees.\n";
     try {
-      // print "tick $tick: release: $draftees_to_release draftees<br />";
+      print "tick $tick: release: $draftees_to_release draftees<br />";
       $result = $this->releaseActionService->release($this->dominion, ['draftees' => $draftees_to_release]);
     } catch(Exception $e) {
       print "ERROR: RELEASING FAILED: {$e->getMessage()}\n";

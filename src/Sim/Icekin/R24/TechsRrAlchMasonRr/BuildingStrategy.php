@@ -30,12 +30,12 @@ class BuildingStrategy extends BaseBuildingStrategy
 
     $new_acres = $this->paid_acres + $capacity;
 
-    if($this->current_acres <= 1900) {
+    if(($dominion->building_farm + $this->incoming_buildings['building_farm']) < 68) {
       $acres_to_explore['land_plain'] += $this->to_explore_by_percentage('building_farm', $new_acres, 0.04, 'plain', $capacity);
       $capacity = $max_afford - array_sum($acres_to_explore);
     }
 
-    $acres_to_explore['land_forest'] += $this->to_explore_by_percentage('building_lumberyard', $new_acres, 0.05, 'forest', $capacity);
+    $acres_to_explore['land_forest'] += $this->to_explore_by_percentage('building_lumberyard', $new_acres, 0.045, 'forest', $capacity);
     $capacity = $max_afford - array_sum($acres_to_explore);
 
     $acres_to_explore['land_swamp'] += $this->to_explore_by_percentage('building_tower', $new_acres, 0.05, 'swamp', $capacity);
@@ -45,7 +45,7 @@ class BuildingStrategy extends BaseBuildingStrategy
       $acres_to_explore['land_plain'] += $this->to_explore_by_percentage('building_smithy', $new_acres, 0.18, 'plain', $capacity);
       $capacity = $max_afford - array_sum($acres_to_explore);
 
-      $acres_to_explore['land_water'] += $this->build_to_max_nr('building_dock', 150, 'water', $capacity);
+      $acres_to_explore['land_water'] += $this->build_to_max_nr('building_dock', 100, 'water', $capacity);
       $capacity = $max_afford - array_sum($acres_to_explore);
     }
 
