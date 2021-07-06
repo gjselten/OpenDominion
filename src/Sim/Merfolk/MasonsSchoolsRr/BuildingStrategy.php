@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenDominion\Sim\Merfolk\LowSchools2;
+namespace OpenDominion\Sim\Merfolk\MasonsSchoolsRr;
 
 use OpenDominion\Calculators\Dominion\LandCalculator;
 use OpenDominion\Calculators\Dominion\PopulationCalculator;
@@ -22,7 +22,7 @@ class BuildingStrategy extends BaseBuildingStrategy
     ];
 
     $new_acres = $this->paid_acres + $capacity;
-    $acres_to_explore['land_plain'] += $this->to_explore_by_percentage('building_farm', $new_acres, 0.065, 'plain', $capacity);
+    $acres_to_explore['land_plain'] += $this->to_explore_by_percentage('building_farm', $new_acres, 0.07, 'plain', $capacity);
     $capacity = $max_afford - array_sum($acres_to_explore);
 
     if($tick < 200) {
@@ -36,16 +36,11 @@ class BuildingStrategy extends BaseBuildingStrategy
     $acres_to_explore['land_swamp'] += $this->to_explore_by_percentage('building_tower', $new_acres, 0.04, 'swamp', $capacity);
     $capacity = $max_afford - array_sum($acres_to_explore);
 
-    if(($dominion->building_smithy + $this->incoming_buildings['building_smithy']) < 250) {
-      $acres_to_explore['land_plain'] += $this->to_explore_by_percentage('building_smithy', $new_acres, 0.18, 'plain', $capacity);
-      $capacity = $max_afford - array_sum($acres_to_explore);
-    }
-
-    // $wanted_schools = $this->build_to_max_nr('building_school', 250, 'cavern', $capacity);
-    // $acres_to_explore['land_cavern'] += $wanted_schools;
+    // $wanted_homes = $this->homes_for_full_employment($tick);
+    // $acres_to_explore['land_water'] += min($wanted_homes, $capacity);
     // $capacity = $max_afford - array_sum($acres_to_explore);
 
-    $wanted_dm = $this->build_to_max_nr('building_diamond_mine', 750, 'cavern', $capacity);
+    $wanted_dm = $this->build_to_max_nr('building_diamond_mine', 775, 'cavern', $capacity);
     $acres_to_explore['land_cavern'] += $wanted_dm;
     $capacity = $max_afford - array_sum($acres_to_explore);
 
@@ -54,14 +49,8 @@ class BuildingStrategy extends BaseBuildingStrategy
       $capacity = $max_afford - array_sum($acres_to_explore);
     }
 
-    $wanted_homes = $this->homes_for_full_employment($tick);
-    $acres_to_explore['land_water'] += min($wanted_homes, $capacity);
-    $capacity = $max_afford - array_sum($acres_to_explore);
-
-
     $acres_to_explore['land_plain'] += $capacity;
-
-    // print "EXPLORE: " . print_r($acres_to_explore, true) . '<br />';
+    // print "explore: explore remaining capacity {$capacity} as plain";
 
     return $acres_to_explore;
   }
@@ -92,7 +81,7 @@ class BuildingStrategy extends BaseBuildingStrategy
     ];
 
     // FARMS
-    $farms_needed = round($this->current_acres * 0.065 - $this->dominion->building_farm - $this->incoming_buildings['building_farm']);
+    $farms_needed = round($this->current_acres * 0.07 - $this->dominion->building_farm - $this->incoming_buildings['building_farm']);
     if($farms_needed > 0) {
       $barren = $this->landCalculator->getTotalBarrenLandByLandType($dominion, 'plain');
       $buildings_to_build['building_farm'] = min($farms_needed, $capacity, $barren);
@@ -104,14 +93,7 @@ class BuildingStrategy extends BaseBuildingStrategy
     $buildings_to_build['building_lumberyard'] = min($capacity, $barren);
     $capacity = $max_afford - array_sum($buildings_to_build);
 
-    // $barren = $this->landCalculator->getTotalBarrenLandByLandType($dominion, 'cavern');
-    // if(($dominion->building_school + $this->incoming_buildings['building_school']) < 250) {
-    //   $buildings_to_build['building_school'] = min($capacity, $barren);
-    //   $capacity = $max_afford - array_sum($buildings_to_build);
-    // }
-
     $barren = $this->landCalculator->getTotalBarrenLandByLandType($dominion, 'cavern');
-    $barren -= $buildings_to_build['building_school'];
     $buildings_to_build['building_diamond_mine'] = min($capacity, $barren);
     $capacity = $max_afford - array_sum($buildings_to_build);
 
@@ -127,17 +109,8 @@ class BuildingStrategy extends BaseBuildingStrategy
     $buildings_to_build['building_guard_tower'] = min($capacity, $barren);
     $capacity = $max_afford - array_sum($buildings_to_build);
 
-    if(($dominion->building_smithy + $this->incoming_buildings['building_smithy']) < 250) {
-      $barren = $this->landCalculator->getTotalBarrenLandByLandType($dominion, 'plain');
-      // $barren -= $buildings_to_build['building_farm'];
-      $buildings_to_build['building_smithy'] = min($capacity, $barren);
-      $capacity = $max_afford - array_sum($buildings_to_build);
-    }
-
     $barren = $this->landCalculator->getTotalBarrenLandByLandType($dominion, 'plain');
-    // $barren -= $buildings_to_build['building_farm'];
-    // $barren -= $buildings_to_build['building_smithy'];
-    $buildings_to_build['building_alchemy'] = min($capacity, $barren);
+    $buildings_to_build['building_masonry'] = min($capacity, $barren);
     $capacity = $max_afford - array_sum($buildings_to_build);
 
     return $buildings_to_build;

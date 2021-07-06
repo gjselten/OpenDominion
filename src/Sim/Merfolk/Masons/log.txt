@@ -1,4 +1,4 @@
-Started sim OpenDominion\Sim\Merfolk\Masons\Sim at 2021-07-04 17:33:05
+Started sim OpenDominion\Sim\Merfolk\Masons\Sim at 2021-07-06 20:51:08
 Tick 0 (day 4 hr 0): 805			 op: 0;	dp: 6477;	u1: 0;	u2: 1250 (0);	u3: 275 (0);	u4: 0 (0);	peas: 9752
 Tick 12 (day 4 hr 12): 805			 op: 0;	dp: 11942;	u1: 0;	u2: 1250 (151);	u3: 742 (217);	u4: 0 (0);	peas: 10099
 Tick 24 (day 5 hr 0): 895			 op: 0;	dp: 11843;	u1: 0;	u2: 1401 (0);	u3: 959 (0);	u4: 0 (0);	peas: 11233

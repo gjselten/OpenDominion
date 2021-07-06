@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenDominion\Sim\Merfolk\LowSchools2;
+namespace OpenDominion\Sim\Merfolk\LowSchoolsRr;
 
 use OpenDominion\Sim\BaseTrainingStrategy;
 use OpenDominion\Calculators\Dominion\MilitaryCalculator;

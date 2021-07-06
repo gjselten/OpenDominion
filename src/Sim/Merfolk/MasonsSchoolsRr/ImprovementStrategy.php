@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenDominion\Sim\Merfolk\LowSchools2;
+namespace OpenDominion\Sim\Merfolk\MasonsSchoolsRr;
 
 use OpenDominion\Sim\BaseImprovementStrategy;
 

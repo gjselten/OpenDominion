@@ -1,19 +1,18 @@
 <?php
 
-namespace OpenDominion\Sim\Merfolk\LowSchools;
+namespace OpenDominion\Sim\Merfolk\MasonsSchoolsRr;
 
 use OpenDominion\Models\User;
 use OpenDominion\Models\Dominion;
 
 use OpenDominion\Sim\Base;
-use OpenDominion\Sim\Merfolk\LowSchools\BuildingStrategy;
-use OpenDominion\Sim\Merfolk\LowSchools\TrainingStrategy;
-use OpenDominion\Sim\Merfolk\LowSchools\ImprovementStrategy;
+use OpenDominion\Sim\Merfolk\MasonsSchoolsRr\BuildingStrategy;
+use OpenDominion\Sim\Merfolk\MasonsSchoolsRr\TrainingStrategy;
+use OpenDominion\Sim\Merfolk\MasonsSchoolsRr\ImprovementStrategy;
 use OpenDominion\Sim\BaseTechStrategy;
 
 class Sim extends Base
 {
-
   function ticks_to_run() {
     return 24 * 46;
   }
@@ -57,6 +56,33 @@ class Sim extends Base
     return $this->buildingStrategy->get_incoming_buildings();
   }
 
+  function takeLandBonus($tick) {
+    if ($tick % 24 !== 0) {
+      return;
+    }
+
+    try {
+      // print "daily land bonus: taking daily land bonus\n";
+      $result = $this->dailyBonusesActionService->claimLand($this->dominion);
+    } catch (Exception $e) {
+      print "ERROR: TAKING DAILY LAND BONUS FAILED: " . $e->getMessage();
+      exit();
+    }
+
+    try {
+      if(($this->dominion->building_home + $this->buildingStrategy->get_incoming_buildings()['building_home']) >= 250) {
+        $result = $this->rezoneActionService->rezone(
+            $this->dominion,
+            ['water' => 20],
+            ['plain' => 20]
+        );
+      }
+    } catch(Exception $e) {
+      print "ERROR: TAKING DAILY LAND BONUS REZONING FAILED: " . $e->getMessage();
+      exit();
+    }
+  }
+
 
   function release($tick) {
     if($tick <= 72) {
@@ -75,6 +101,29 @@ class Sim extends Base
     } catch(Exception $e) {
       print "ERROR: RELEASING FAILED: {$e->getMessage()}\n";
       exit();
+    }
+  }
+
+  function destroy($tick) {
+    if($this->dominion->building_school === 0) {
+      return;
+    }
+
+    $unlocked_techs = $this->dominion->techs->pluck('key')->all();
+    // print 'UNLOCKED TECHS: ' . print_r($unlocked_techs, true) . '<br />';
+    if(in_array('tech_15_5', $unlocked_techs)) { // -7.5% explore cost
+      try {
+        $nr_schools = $this->dominion->building_school;
+        $result = $this->destroyActionService->destroy($this->dominion, ['school' => $nr_schools]);
+        // $result = $this->rezoneActionService->rezone(
+        //     $this->dominion,
+        //     ['cavern' => $nr_schools],
+        //     ['plain' => $nr_schools]
+        // );
+      } catch (Exception $e) {
+        print "DESTROYING SCHOOL ERROR: " . $e->getMessage();
+        exit();
+      }
     }
   }
 
@@ -129,7 +178,7 @@ class Sim extends Base
       'resource_lumber' => 14888,
       'resource_mana' => 10000,
       'resource_ore' => 0,
-      'resource_gems' => 0,
+      'resource_gems' => 22740,
       'resource_tech' => 0,
       'resource_boats' => 0,
 
@@ -167,8 +216,8 @@ class Sim extends Base
       'building_tower' => 24,
       'building_wizard_guild' => 0,
       'building_temple' => 0,
-      'building_diamond_mine' => 0,
-      'building_school' => 167,
+      'building_diamond_mine' => 67,
+      'building_school' => 100,
       'building_lumberyard' => 32,
       'building_forest_haven' => 0,
       'building_factory' => 107,

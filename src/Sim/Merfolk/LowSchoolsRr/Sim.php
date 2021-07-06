@@ -1,14 +1,14 @@
 <?php
 
-namespace OpenDominion\Sim\Merfolk\LowSchools2;
+namespace OpenDominion\Sim\Merfolk\LowSchoolsRr;
 
 use OpenDominion\Models\User;
 use OpenDominion\Models\Dominion;
 
 use OpenDominion\Sim\Base;
-use OpenDominion\Sim\Merfolk\LowSchools2\BuildingStrategy;
-use OpenDominion\Sim\Merfolk\LowSchools2\TrainingStrategy;
-use OpenDominion\Sim\Merfolk\LowSchools2\ImprovementStrategy;
+use OpenDominion\Sim\Merfolk\LowSchoolsRr\BuildingStrategy;
+use OpenDominion\Sim\Merfolk\LowSchoolsRr\TrainingStrategy;
+use OpenDominion\Sim\Merfolk\LowSchoolsRr\ImprovementStrategy;
 use OpenDominion\Sim\BaseTechStrategy;
 
 class Sim extends Base
@@ -57,6 +57,28 @@ class Sim extends Base
     return $this->buildingStrategy->get_incoming_buildings();
   }
 
+  function destroy($tick) {
+    if($this->dominion->building_school === 0) {
+      return;
+    }
+
+    $unlocked_techs = $this->dominion->techs->pluck('key')->all();
+    // print 'UNLOCKED TECHS: ' . print_r($unlocked_techs, true) . '<br />';
+    if(in_array('tech_15_5', $unlocked_techs)) { // -7.5% explore cost
+      try {
+        $nr_schools = $this->dominion->building_school;
+        $result = $this->destroyActionService->destroy($this->dominion, ['school' => $nr_schools]);
+        // $result = $this->rezoneActionService->rezone(
+        //     $this->dominion,
+        //     ['cavern' => $nr_schools],
+        //     ['plain' => $nr_schools]
+        // );
+      } catch (Exception $e) {
+        print "DESTROYING SCHOOL ERROR: " . $e->getMessage();
+        exit();
+      }
+    }
+  }
 
   function release($tick) {
     if($tick <= 72) {
@@ -76,6 +98,19 @@ class Sim extends Base
       print "ERROR: RELEASING FAILED: {$e->getMessage()}\n";
       exit();
     }
+  }
+
+  function specDp() {
+    return 3;
+  }
+  function eliteDp() {
+    return 7;
+  }
+  function specOp() {
+    return 3;
+  }
+  function eliteOp() {
+    return 4;
   }
 
   function createOopDom() {
