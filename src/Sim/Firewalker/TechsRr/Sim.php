@@ -100,6 +100,19 @@ class Sim extends Base
     }
   }
 
+  function specDp() {
+    return 3;
+  }
+  function eliteDp() {
+    return 4.5;
+  }
+  function specOp() {
+    return 3;
+  }
+  function eliteOp() {
+    return 5;
+  }
+
   function createOopDom() {
     $user = User::create([
         'email' => "email" . rand(0,999999999) . "@example.com",

@@ -14,7 +14,7 @@ use OpenDominion\Sim\BaseTechStrategy;
 class Sim extends Base
 {
   function ticks_to_run() {
-    return 24 * 46;
+    return 24 * 25;
   }
 
   function setup($tick) {
@@ -75,6 +75,19 @@ class Sim extends Base
       print "ERROR: RELEASING FAILED: {$e->getMessage()}\n";
       exit();
     }
+  }
+
+  function specDp() {
+    return 4;
+  }
+  function eliteDp() {
+    return $this->militaryCalculator->getUnitPowerWithPerks($this->dominion, null, null, $this->dominion->race->units[2], 'defense');
+  }
+  function specOp() {
+    return 3;
+  }
+  function eliteOp() {
+    return $this->militaryCalculator->getUnitPowerWithPerks($this->dominion, null, null, $this->dominion->race->units[3], 'offense');
   }
 
   function createOopDom() {

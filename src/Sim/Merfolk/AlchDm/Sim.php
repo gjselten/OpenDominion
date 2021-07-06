@@ -19,7 +19,7 @@ class Sim extends Base
 
   function setup($tick) {
     $this->buildingStrategy = new BuildingStrategy($this->dominion, $this->queueService);
-    $this->trainingStrategy = new TrainingStrategy($this->dominion, $this->queueService, $this->militaryCalculator, $this->trainingCalculator);
+    $this->trainingStrategy = new TrainingStrategy($this->dominion, 3, 7, $this->queueService, $this->militaryCalculator, $this->trainingCalculator);
     $this->improvementStrategy =  new ImprovementStrategy();
     $this->tech_strategy = new TechStrategy();
   }
@@ -75,6 +75,20 @@ class Sim extends Base
       print "ERROR: RELEASING FAILED: {$e->getMessage()}\n";
       exit();
     }
+  }
+
+
+  function specDp() {
+    return 3;
+  }
+  function eliteDp() {
+    return 7;
+  }
+  function specOp() {
+    return 3;
+  }
+  function eliteOp() {
+    return 4;
   }
 
   function createOopDom() {

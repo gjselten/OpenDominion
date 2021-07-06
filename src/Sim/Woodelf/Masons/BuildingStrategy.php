@@ -41,9 +41,12 @@ class BuildingStrategy extends BaseBuildingStrategy
     $acres_to_explore['land_swamp'] += $this->to_explore_by_percentage('building_tower', $new_acres, 0.04, 'swamp', $capacity);
     $capacity = $max_afford - array_sum($acres_to_explore);
 
-    // $wanted_homes = $this->homes_for_full_employment($tick);
-    // $acres_to_explore['land_water'] += min($wanted_homes, $capacity);
-    // $capacity = $max_afford - array_sum($acres_to_explore);
+    $wanted_homes = $this->homes_for_full_employment($tick);
+    $wanted_homes -= (round($this->incoming_acres['land_forest'] - $this->incoming_acres['land_forest'] * 0.05));
+    if($wanted_homes > 0) {
+      $acres_to_explore['land_forest'] += min($wanted_homes, $capacity);
+      $capacity = $max_afford - array_sum($acres_to_explore);
+    }
 
     $wanted_dm = $this->build_to_max_nr('building_diamond_mine', 850, 'cavern', $capacity);
     $acres_to_explore['land_cavern'] += $wanted_dm;

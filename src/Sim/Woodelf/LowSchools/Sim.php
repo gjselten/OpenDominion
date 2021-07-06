@@ -82,6 +82,19 @@ class Sim extends Base
     }
   }
 
+  function specDp() {
+    return 4;
+  }
+  function eliteDp() {
+    return $this->militaryCalculator->getUnitPowerWithPerks($this->dominion, null, null, $this->dominion->race->units[2], 'defense');
+  }
+  function specOp() {
+    return 3;
+  }
+  function eliteOp() {
+    return $this->militaryCalculator->getUnitPowerWithPerks($this->dominion, null, null, $this->dominion->race->units[3], 'offense');
+  }
+
   function createOopDom() {
     $user = User::create([
         'email' => "email" . rand(0,999999999) . "@example.com",
@@ -143,12 +156,12 @@ class Sim extends Base
       'land_plain' => 256,
       'land_mountain' => 15,
       'land_swamp' => 19,
-      'land_cavern' => 246,
-      'land_forest' => 115,
+      'land_cavern' => 146,
+      'land_forest' => 215,
       'land_hill' => 109,
       'land_water' => 0,
 
-      'building_home' => 101,
+      'building_home' => 201,
       'building_alchemy' => 132,
       'building_farm' => 42,
       'building_smithy' => 82,
@@ -158,8 +171,8 @@ class Sim extends Base
       'building_tower' => 19,
       'building_wizard_guild' => 0,
       'building_temple' => 0,
-      'building_diamond_mine' => 46,
-      'building_school' => 200,
+      'building_diamond_mine' => 146,
+      'building_school' => 0,
       'building_lumberyard' => 14,
       'building_forest_haven' => 0,
       'building_factory' => 109,
