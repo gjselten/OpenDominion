@@ -16,7 +16,7 @@ class TrainingStrategy extends BaseTrainingStrategy
       return $to_train;
     }
 
-    if($tick > 5 && $dominion->military_unit2 < 5000) {
+    if($tick > 5 && $dominion->military_unit2 < 2000) {
       $unit2_needed = ceil($raw_dp_to_train / $this->unit2_str);
       $max_unit2_trainable = $this->trainingCalculator->getMaxTrainable($dominion)['unit2'];
       $unit2_to_train = min($unit2_needed, $max_unit2_trainable);

@@ -41,7 +41,7 @@ class BuildingStrategy extends BaseBuildingStrategy
     $acres_to_explore['land_swamp'] += $this->to_explore_by_percentage('building_tower', $new_acres, 0.04, 'swamp', $capacity);
     $capacity = $max_afford - array_sum($acres_to_explore);
 
-    $wanted_homes = $this->homes_for_full_employment($tick);
+    $wanted_homes = $this->homes_for_full_employment($tick) * 0.95;
     $wanted_homes -= (round($this->incoming_acres['land_forest'] - $this->incoming_acres['land_forest'] * 0.05));
     if($wanted_homes > 0) {
       $acres_to_explore['land_forest'] += min($wanted_homes, $capacity);
@@ -89,10 +89,10 @@ class BuildingStrategy extends BaseBuildingStrategy
     ];
 
     // FARMS
-    if($tick < 700) {
+    if($tick < 600) {
       $farms_needed = round($this->current_acres * 0.075 - $this->dominion->building_farm - $this->incoming_buildings['building_farm']);
     } else {
-      $farms_needed = round($this->current_acres * 0.08 - $this->dominion->building_farm - $this->incoming_buildings['building_farm']);
+      $farms_needed = round($this->current_acres * 0.085 - $this->dominion->building_farm - $this->incoming_buildings['building_farm']);
     }
     if($farms_needed > 0) {
       $barren = $this->landCalculator->getTotalBarrenLandByLandType($dominion, 'plain');
