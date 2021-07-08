@@ -21,6 +21,10 @@ class BuildingStrategy extends BaseBuildingStrategy
       'land_water' => 0
     ];
 
+    if($this->current_acres + array_sum($this->incoming_acres) > 3000) {
+      return $acres_to_explore;
+    }
+
     $new_acres = $this->paid_acres + $capacity;
     $acres_to_explore['land_plain'] += $this->to_explore_by_percentage('building_farm', $new_acres, 0.07, 'plain', $capacity);
     $capacity = $max_afford - array_sum($acres_to_explore);
@@ -36,11 +40,11 @@ class BuildingStrategy extends BaseBuildingStrategy
     $acres_to_explore['land_swamp'] += $this->to_explore_by_percentage('building_tower', $new_acres, 0.04, 'swamp', $capacity);
     $capacity = $max_afford - array_sum($acres_to_explore);
 
-    if($this->current_acres > 1500) {
-      $wanted_homes = $this->homes_for_full_employment($tick);
-      $acres_to_explore['land_water'] += min($wanted_homes, $capacity);
-      $capacity = $max_afford - array_sum($acres_to_explore);
-    }
+    // if($this->current_acres < 1500) {
+    //   $wanted_homes = $this->homes_for_full_employment($tick);
+    //   $acres_to_explore['land_water'] += min($wanted_homes, $capacity);
+    //   $capacity = $max_afford - array_sum($acres_to_explore);
+    // }
 
     if($this->current_acres > 2400) {
       $acres_to_explore['land_plain'] += $this->to_explore_by_percentage('building_smithy', $new_acres, 0.18, 'plain', $capacity);
@@ -90,11 +94,12 @@ class BuildingStrategy extends BaseBuildingStrategy
       $capacity = $max_afford - array_sum($buildings_to_build);
     }
 
-    if($tick >= 500) {
+    if($dominion->building_smithy + $this->incoming_buildings['building_smithy'] >= 540) {
       // MASON
       $barren -= $buildings_to_build['building_farm'];
       $buildings_to_build['building_masonry'] = min($capacity, $barren);
       $capacity = $max_afford - array_sum($buildings_to_build);
+      // print "Should be building masonry. " . print_r($buildings_to_build, true) . "<br />";
     } else {
       // SMITHY
       $barren -= $buildings_to_build['building_farm'];
@@ -120,10 +125,6 @@ class BuildingStrategy extends BaseBuildingStrategy
 
     $barren = $this->landCalculator->getTotalBarrenLandByLandType($dominion, 'hill');
     $buildings_to_build['building_guard_tower'] = min($capacity, $barren);
-    $capacity = $max_afford - array_sum($buildings_to_build);
-
-    $barren = $this->landCalculator->getTotalBarrenLandByLandType($dominion, 'plain');
-    $buildings_to_build['building_masonry'] = min($capacity, $barren);
     $capacity = $max_afford - array_sum($buildings_to_build);
 
     return $buildings_to_build;

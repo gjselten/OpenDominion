@@ -14,7 +14,7 @@ use OpenDominion\Sim\BaseTechStrategy;
 class Sim extends Base
 {
   function ticks_to_run() {
-    return 24 * 20;
+    return 24 * 21;
   }
 
   function setup($tick) {
@@ -105,26 +105,26 @@ class Sim extends Base
   }
 
   function destroy($tick) {
-    if($this->dominion->building_school === 0) {
-      return;
-    }
-
-    $unlocked_techs = $this->dominion->techs->pluck('key')->all();
-    // print 'UNLOCKED TECHS: ' . print_r($unlocked_techs, true) . '<br />';
-    if(in_array('tech_15_5', $unlocked_techs)) { // -7.5% explore cost
-      try {
-        $nr_schools = $this->dominion->building_school;
-        $result = $this->destroyActionService->destroy($this->dominion, ['school' => $nr_schools]);
-        // $result = $this->rezoneActionService->rezone(
-        //     $this->dominion,
-        //     ['cavern' => $nr_schools],
-        //     ['plain' => $nr_schools]
-        // );
-      } catch (Exception $e) {
-        print "DESTROYING SCHOOL ERROR: " . $e->getMessage();
-        exit();
-      }
-    }
+    // if($this->dominion->building_school === 0) {
+    //   return;
+    // }
+    //
+    // $unlocked_techs = $this->dominion->techs->pluck('key')->all();
+    // // print 'UNLOCKED TECHS: ' . print_r($unlocked_techs, true) . '<br />';
+    // if(in_array('tech_15_5', $unlocked_techs)) { // -7.5% explore cost
+    //   try {
+    //     $nr_schools = $this->dominion->building_school;
+    //     $result = $this->destroyActionService->destroy($this->dominion, ['school' => $nr_schools]);
+    //     // $result = $this->rezoneActionService->rezone(
+    //     //     $this->dominion,
+    //     //     ['cavern' => $nr_schools],
+    //     //     ['plain' => $nr_schools]
+    //     // );
+    //   } catch (Exception $e) {
+    //     print "DESTROYING SCHOOL ERROR: " . $e->getMessage();
+    //     exit();
+    //   }
+    // }
   }
 
   function specDp() {
