@@ -1,15 +1,15 @@
 <?php
 
-namespace OpenDominion\Sim\Icekin\R24\AlchMasonRr;
+namespace OpenDominion\Sim\Gnome\AlchMasonRr;
 
 use OpenDominion\Models\User;
 use OpenDominion\Models\Dominion;
 
 use OpenDominion\Sim\Base;
-use OpenDominion\Sim\Icekin\R24\AlchMasonRr\BuildingStrategy;
-use OpenDominion\Sim\Icekin\R24\AlchMasonRr\TrainingStrategy;
-use OpenDominion\Sim\Icekin\R24\AlchMasonRr\ImprovementStrategy;
-use OpenDominion\Sim\Icekin\R24\AlchMasonRr\TechStrategy;
+use OpenDominion\Sim\Gnome\AlchMasonRr\BuildingStrategy;
+use OpenDominion\Sim\Gnome\AlchMasonRr\TrainingStrategy;
+use OpenDominion\Sim\Gnome\AlchMasonRr\ImprovementStrategy;
+use OpenDominion\Sim\Gnome\AlchMasonRr\TechStrategy;
 use OpenDominion\Sim\BaseTechStrategy;
 
 class Sim extends Base
@@ -55,7 +55,7 @@ class Sim extends Base
   }
 
   function get_self_spells_to_cast($tick) {
-    return ['midas_touch', 'gaias_watch', 'blizzard', 'mining_strength'];
+    return ['midas_touch', 'gaias_watch', 'ares_call', 'miners_sight'];
   }
 
   function get_incoming_acres_by_landtype() {
@@ -82,11 +82,11 @@ class Sim extends Base
 
   function destroy($tick) {
     if($tick == 432) {
-      $result = $this->destroyActionService->destroy($this->dominion, ['alchemy' => 150]);
+      $result = $this->destroyActionService->destroy($this->dominion, ['alchemy' => 67]);
       print "tick $tick: destroyed 150 alchs<br />";
     }
     if($tick == 442) {
-      $result = $this->destroyActionService->destroy($this->dominion, ['alchemy' => 85]);
+      $result = $this->destroyActionService->destroy($this->dominion, ['alchemy' => 67]);
       print "tick $tick: destroyed 86 alchs<br />";
     }
 
@@ -148,10 +148,10 @@ class Sim extends Base
     return $this->militaryCalculator->getUnitPowerWithPerks($this->dominion, null, null, $this->dominion->race->units[2], 'defense');
   }
   function specOp() {
-    return 3;
+    return 4;
   }
   function eliteOp() {
-    return 7;
+    return 6.5;
   }
 
   function createOopDom() {
@@ -166,7 +166,7 @@ class Sim extends Base
     $user_id = $user->id;
     $round_id = 1;
     $realm_id = 2;
-    $race_id = 8;
+    $race_id = 4;
 
     return Dominion::create([
       'user_id' => $user_id,
@@ -179,7 +179,7 @@ class Sim extends Base
       'name' => 'domname'  . rand(0,999999999),
       'prestige' => 250,
 
-      'peasants' => 10361,
+      'peasants' => 9181,
       'peasants_last_hour' => 0,
 
       'draft_rate' => 90,
@@ -187,52 +187,52 @@ class Sim extends Base
       'spy_strength' => 100,
       'wizard_strength' => 100,
 
-      'resource_platinum' => 1174,
-      'resource_food' => 15000,
+      'resource_platinum' => 205378,
+      'resource_food' => 50000,
       'resource_lumber' => 2315,
       'resource_mana' => 10000,
-      'resource_ore' => 0,
+      'resource_ore' => 185000,
       'resource_gems' => 0,
       'resource_tech' => 0,
       'resource_boats' => 0,
 
       'improvement_science' => 0,
-      'improvement_keep' => 64684,
+      'improvement_keep' => 0,
       'improvement_towers' => 0,
       'improvement_forges' => 0,
       'improvement_walls' => 0,
       'improvement_harbor' => 0,
 
-      'military_draftees' => 89,
+      'military_draftees' => 434,
       'military_unit1' => 0,
-      'military_unit2' => 850,
-      'military_unit3' => 1200,
+      'military_unit2' => 950,
+      'military_unit3' => 580,
       'military_unit4' => 0,
       'military_spies' => 0,
       'military_wizards' => 0,
       'military_archmages' => 0,
 
-      'land_plain' => 402,
-      'land_mountain' => 335,
-      'land_swamp' => 40,
+      'land_plain' => 296,
+      'land_mountain' => 415,
+      'land_swamp' => 41,
       'land_cavern' => 0,
-      'land_forest' => 33,
+      'land_forest' => 20,
       'land_hill' => 0,
       'land_water' => 0,
 
-      'building_home' => 50,
-      'building_alchemy' => 235,
-      'building_farm' => 25,
-      'building_smithy' => 142,
+      'building_home' => 31,
+      'building_alchemy' => 134,
+      'building_farm' => 27,
+      'building_smithy' => 135,
       'building_masonry' => 0,
-      'building_ore_mine' => 285,
+      'building_ore_mine' => 384,
       'building_gryphon_nest' => 0,
-      'building_tower' => 40,
+      'building_tower' => 41,
       'building_wizard_guild' => 0,
       'building_temple' => 0,
       'building_diamond_mine' => 0,
       'building_school' => 0,
-      'building_lumberyard' => 33,
+      'building_lumberyard' => 20,
       'building_forest_haven' => 0,
       'building_factory' => 0,
       'building_guard_tower' => 0,

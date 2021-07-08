@@ -1,4 +1,4 @@
-Started sim OpenDominion\Sim\Icekin\R24\AlchMasonRr\Sim at 2021-07-05 11:38:09
+Started sim OpenDominion\Sim\Icekin\R24\AlchMasonRr\Sim at 2021-07-08 13:49:21
 Tick 0 (day 4 hr 0): 810			 op: 0;	dp: 9926;	u1: 0;	u2: 850 (0);	u3: 1200 (0);	u4: 0 (0);	peas: 10448
 Tick 12 (day 4 hr 12): 810			 op: 0;	dp: 13143;	u1: 0;	u2: 850 (0);	u3: 1200 (552);	u4: 0 (0);	peas: 11000
 Tick 24 (day 5 hr 0): 896			 op: 0;	dp: 13430;	u1: 0;	u2: 850 (0);	u3: 1752 (0);	u4: 0 (0);	peas: 12363
