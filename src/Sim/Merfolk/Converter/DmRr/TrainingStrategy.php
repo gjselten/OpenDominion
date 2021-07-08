@@ -12,6 +12,18 @@ class TrainingStrategy extends BaseTrainingStrategy
   function get_units_to_train($dominion, $tick) {
     $to_train = ['military_unit2' => 0, 'military_unit3' => 0];
 
+    $ticks_saving_up_plat = [
+      464,465,466,467,468,            # r/r alchs to masons
+      473,474,475,476,477,478,479,    # r/r dm to masons
+      484,485,486,487,488,489,490,    # r/r dm to masons
+      492,493,494,495                 # r/r facts to homes
+    ];
+
+    if(in_array($tick, $ticks_saving_up_plat)) {
+      return $to_train;
+    }
+
+
     $landCalculator = app(LandCalculator::class);
     $acres = $landCalculator->getTotalLand($dominion);
     $convert = false;

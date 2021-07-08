@@ -14,7 +14,7 @@ use OpenDominion\Sim\BaseTechStrategy;
 class Sim extends Base
 {
   function ticks_to_run() {
-    return 24 * 21;
+    return 24 * 25;
   }
 
   function setup($tick) {
@@ -68,21 +68,7 @@ class Sim extends Base
       print "ERROR: TAKING DAILY LAND BONUS FAILED: " . $e->getMessage();
       exit();
     }
-
-    try {
-      if(($this->dominion->building_home + $this->buildingStrategy->get_incoming_buildings()['building_home']) >= 250) {
-        $result = $this->rezoneActionService->rezone(
-            $this->dominion,
-            ['water' => 20],
-            ['plain' => 20]
-        );
-      }
-    } catch(Exception $e) {
-      print "ERROR: TAKING DAILY LAND BONUS REZONING FAILED: " . $e->getMessage();
-      exit();
-    }
   }
-
 
   function release($tick) {
     if($tick <= 72) {
@@ -105,25 +91,39 @@ class Sim extends Base
   }
 
   function destroy($tick) {
-    // if($this->dominion->building_school === 0) {
-    //   return;
-    // }
-    //
-    // $unlocked_techs = $this->dominion->techs->pluck('key')->all();
-    // // print 'UNLOCKED TECHS: ' . print_r($unlocked_techs, true) . '<br />';
-    // if(in_array('tech_15_5', $unlocked_techs)) { // -7.5% explore cost
-    //   try {
-    //     $nr_schools = $this->dominion->building_school;
-    //     $result = $this->destroyActionService->destroy($this->dominion, ['school' => $nr_schools]);
-    //     // $result = $this->rezoneActionService->rezone(
-    //     //     $this->dominion,
-    //     //     ['cavern' => $nr_schools],
-    //     //     ['plain' => $nr_schools]
-    //     // );
-    //   } catch (Exception $e) {
-    //     print "DESTROYING SCHOOL ERROR: " . $e->getMessage();
-    //     exit();
-    //   }
+    if($tick == 468) {
+      $result = $this->destroyActionService->destroy($this->dominion, ['alchemy' => 239]);
+      print "tick $tick: destroyed 239 alchs<br />";
+    }
+
+    if($tick == 479) {
+      $result = $this->destroyActionService->destroy($this->dominion, ['diamond_mine' => 250]);
+      print "tick $tick: destroyed 250 diamond mines<br />";
+      $result = $this->rezoneActionService->rezone(
+          $this->dominion,
+          ['cavern' => 250],
+          ['plain' => 250]
+      );
+    }
+
+    if($tick == 490) {
+      $result = $this->destroyActionService->destroy($this->dominion, ['diamond_mine' => 250]);
+      print "tick $tick: destroyed 250 diamond mines<br />";
+      $result = $this->rezoneActionService->rezone(
+          $this->dominion,
+          ['cavern' => 250],
+          ['plain' => 250]
+      );
+    }
+
+    // if($tick == 495) {
+    //   $result = $this->destroyActionService->destroy($this->dominion, ['factory' => 107]);
+    //   print "tick $tick: destroyed 107 factories<br />";
+    //   $result = $this->rezoneActionService->rezone(
+    //       $this->dominion,
+    //       ['hill' => 107],
+    //       ['water' => 107]
+    //   );
     // }
   }
 
