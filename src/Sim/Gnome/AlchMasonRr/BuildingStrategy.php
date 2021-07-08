@@ -124,7 +124,7 @@ class BuildingStrategy extends BaseBuildingStrategy
 
     $barren = $this->landCalculator->getTotalBarrenLandByLandType($dominion, 'mountain');
     $barren -= $buildings_to_build['building_home'];
-    if(($dominion->building_ore_mine + $this->incoming_buildings['building_ore_mine']) < 1400) {
+    if(($dominion->building_ore_mine + $this->incoming_buildings['building_ore_mine']) < 1300) {
       $buildings_to_build['building_ore_mine'] = min($capacity, $barren);
       $capacity = $max_afford - array_sum($buildings_to_build);
     }

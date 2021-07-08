@@ -10,7 +10,7 @@ class ImprovementStrategy extends BaseImprovementStrategy
     return [
       ['keep', 22],
       ['science', 8],
-      ['walls', 13],
+      ['walls', 11],
       ['forges', 13],
       ['keep', 30],
     ];

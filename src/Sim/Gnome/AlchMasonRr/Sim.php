@@ -81,13 +81,13 @@ class Sim extends Base
   }
 
   function destroy($tick) {
-    if($tick == 432) {
+    if($tick == 480) {
       $result = $this->destroyActionService->destroy($this->dominion, ['alchemy' => 67]);
-      print "tick $tick: destroyed 150 alchs<br />";
+      print "tick $tick: destroyed 67 alchs<br />";
     }
-    if($tick == 442) {
+    if($tick == 491) {
       $result = $this->destroyActionService->destroy($this->dominion, ['alchemy' => 67]);
-      print "tick $tick: destroyed 86 alchs<br />";
+      print "tick $tick: destroyed 67 alchs<br />";
     }
 
     // if($tick == 440) {
