@@ -134,7 +134,7 @@ class Sim extends Base
       $result = $this->rezoneActionService->rezone(
           $this->dominion,
           ['hill' => 107],
-          ['water' => 107]
+          ['plain' => 107]
       );
     }
   }
