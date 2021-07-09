@@ -116,15 +116,27 @@ class Sim extends Base
       );
     }
 
-    // if($tick == 495) {
-    //   $result = $this->destroyActionService->destroy($this->dominion, ['factory' => 107]);
-    //   print "tick $tick: destroyed 107 factories<br />";
-    //   $result = $this->rezoneActionService->rezone(
-    //       $this->dominion,
-    //       ['hill' => 107],
-    //       ['water' => 107]
-    //   );
-    // }
+
+    if($tick == 500) {
+      $result = $this->destroyActionService->destroy($this->dominion, ['diamond_mine' => 250]);
+      print "tick $tick: destroyed 250 diamond mines<br />";
+      $result = $this->rezoneActionService->rezone(
+          $this->dominion,
+          ['cavern' => 250],
+          ['plain' => 250]
+      );
+    }
+
+
+    if($tick == 511) {
+      $result = $this->destroyActionService->destroy($this->dominion, ['factory' => 107]);
+      print "tick $tick: destroyed 107 factories<br />";
+      $result = $this->rezoneActionService->rezone(
+          $this->dominion,
+          ['hill' => 107],
+          ['water' => 107]
+      );
+    }
   }
 
   function specDp() {

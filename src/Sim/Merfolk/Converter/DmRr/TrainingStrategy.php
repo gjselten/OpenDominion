@@ -16,7 +16,8 @@ class TrainingStrategy extends BaseTrainingStrategy
       464,465,466,467,468,            # r/r alchs to masons
       473,474,475,476,477,478,479,    # r/r dm to masons
       484,485,486,487,488,489,490,    # r/r dm to masons
-      492,493,494,495                 # r/r facts to homes
+      494,495,496,497,498,499,500,    # r/r dm to masons
+      508,509,510,511                 # r/r facts to homes
     ];
 
     if(in_array($tick, $ticks_saving_up_plat)) {
