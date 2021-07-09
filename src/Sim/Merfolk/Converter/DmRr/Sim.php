@@ -91,51 +91,55 @@ class Sim extends Base
   }
 
   function destroy($tick) {
-    if($tick == 468) {
-      $result = $this->destroyActionService->destroy($this->dominion, ['alchemy' => 239]);
-      print "tick $tick: destroyed 239 alchs<br />";
-    }
+    try {
+      if($tick == 468) {
+        $result = $this->destroyActionService->destroy($this->dominion, ['alchemy' => 239]);
+        print "tick $tick: destroyed 239 alchs<br />";
+      }
 
-    if($tick == 479) {
-      $result = $this->destroyActionService->destroy($this->dominion, ['diamond_mine' => 250]);
-      print "tick $tick: destroyed 250 diamond mines<br />";
-      $result = $this->rezoneActionService->rezone(
-          $this->dominion,
-          ['cavern' => 250],
-          ['plain' => 250]
-      );
-    }
+      if($tick == 479) {
+        $result = $this->destroyActionService->destroy($this->dominion, ['diamond_mine' => 250]);
+        print "tick $tick: destroyed 250 diamond mines<br />";
+        $result = $this->rezoneActionService->rezone(
+            $this->dominion,
+            ['cavern' => 250],
+            ['plain' => 250]
+        );
+      }
 
-    if($tick == 490) {
-      $result = $this->destroyActionService->destroy($this->dominion, ['diamond_mine' => 250]);
-      print "tick $tick: destroyed 250 diamond mines<br />";
-      $result = $this->rezoneActionService->rezone(
-          $this->dominion,
-          ['cavern' => 250],
-          ['plain' => 250]
-      );
-    }
-
-
-    if($tick == 500) {
-      $result = $this->destroyActionService->destroy($this->dominion, ['diamond_mine' => 250]);
-      print "tick $tick: destroyed 250 diamond mines<br />";
-      $result = $this->rezoneActionService->rezone(
-          $this->dominion,
-          ['cavern' => 250],
-          ['plain' => 250]
-      );
-    }
+      if($tick == 490) {
+        $result = $this->destroyActionService->destroy($this->dominion, ['diamond_mine' => 250]);
+        print "tick $tick: destroyed 250 diamond mines<br />";
+        $result = $this->rezoneActionService->rezone(
+            $this->dominion,
+            ['cavern' => 250],
+            ['plain' => 250]
+        );
+      }
 
 
-    if($tick == 511) {
-      $result = $this->destroyActionService->destroy($this->dominion, ['factory' => 107]);
-      print "tick $tick: destroyed 107 factories<br />";
-      $result = $this->rezoneActionService->rezone(
-          $this->dominion,
-          ['hill' => 107],
-          ['plain' => 107]
-      );
+      if($tick == 500) {
+        $result = $this->destroyActionService->destroy($this->dominion, ['diamond_mine' => 250]);
+        print "tick $tick: destroyed 250 diamond mines<br />";
+        $result = $this->rezoneActionService->rezone(
+            $this->dominion,
+            ['cavern' => 250],
+            ['plain' => 250]
+        );
+      }
+
+
+      if($tick == 511) {
+        $result = $this->destroyActionService->destroy($this->dominion, ['factory' => 107]);
+        print "tick $tick: destroyed 107 factories<br />";
+        $result = $this->rezoneActionService->rezone(
+            $this->dominion,
+            ['hill' => 107],
+            ['plain' => 107]
+        );
+      }
+    } catch(Exception $e) {
+      print "ERROR: tick $tick: ; platinum: " . $this->dominion->resource_platinum . '; error: ' . $e->getMessage() . "<br />";
     }
   }
 

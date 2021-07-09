@@ -21,6 +21,18 @@ class BuildingStrategy extends BaseBuildingStrategy
       'land_water' => 0
     ];
 
+    $ticks_saving_up_plat = [
+      464,465,466,467,468,            # r/r alchs to masons
+      473,474,475,476,477,478,479,    # r/r dm to masons
+      484,485,486,487,488,489,490,    # r/r dm to masons
+      494,495,496,497,498,499,500,    # r/r dm to masons
+      508,509,510,511                 # r/r facts to homes
+    ];
+
+    if(in_array($tick, $ticks_saving_up_plat)) {
+      return $acres_to_explore;
+    }
+
     if($this->current_acres + array_sum($this->incoming_acres) > 3000) {
       return $acres_to_explore;
     }
